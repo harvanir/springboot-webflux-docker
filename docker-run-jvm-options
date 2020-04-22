@@ -1,0 +1,7 @@
+#!/bin/sh
+
+docker run -m 1g --memory-swappiness=0 -it openjdk:8u212-jre-alpine3.9                  java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheap|maxram|maxmetaspace|maxnew|G1HeapRegionSize|G1HeapWastePercent|GCHeapFreeLimit|InitialHeapSize|InitiatingHeapOccupancyPercent|MinHeapFreeRatio'
+docker run -m 1g --memory-swappiness=0 -it openjdk:8u252-jre-slim-buster                java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheap|maxram|maxmetaspace|maxnew|G1HeapRegionSize|G1HeapWastePercent|GCHeapFreeLimit|InitialHeapSize|InitiatingHeapOccupancyPercent|MinHeapFreeRatio'
+docker run -m 1g --memory-swappiness=0 -it adoptopenjdk/openjdk11:jre-11.0.7_10-alpine  java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheap|maxram|maxmetaspace|maxnew|G1HeapRegionSize|G1HeapWastePercent|GCHeapFreeLimit|InitialHeapSize|InitiatingHeapOccupancyPercent|MinHeapFreeRatio'
+docker run -m 1g --memory-swappiness=0 -it openjdk:11.0.7-jre-slim-buster               java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheap|maxram|maxmetaspace|maxnew|G1HeapRegionSize|G1HeapWastePercent|GCHeapFreeLimit|InitialHeapSize|InitiatingHeapOccupancyPercent|MinHeapFreeRatio'
+docker run -m 1g --memory-swappiness=0 -it azul/zulu-openjdk-alpine:11.0.7-jre-headless java -XX:+PrintFlagsFinal -version | grep -Ei 'maxheap|maxram|maxmetaspace|maxnew|G1HeapRegionSize|G1HeapWastePercent|GCHeapFreeLimit|InitialHeapSize|InitiatingHeapOccupancyPercent|MinHeapFreeRatio'

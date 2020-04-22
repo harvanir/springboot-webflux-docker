@@ -1,0 +1,7 @@
+#!/bin/sh
+./mvnw clean install -Dmaven.test.skip=true
+docker build -f docker/Dockerfile-8-openjdk-alpine -t webflux-8-alpine .
+docker build -f docker/Dockerfile-8-openjdk-slim-buster -t webflux-8-slim-buster .
+docker build -f docker/Dockerfile-11-adoptopenjdk-alpine -t webflux-11-adoptopenjdk-alpine .
+docker build -f docker/Dockerfile-11-openjdk-slim-buster -t webflux-11-openjdk-slim-buster .
+docker build -f docker/Dockerfile-11-zulu-alpine-headless -t webflux-11-zulu-alpine-headless .

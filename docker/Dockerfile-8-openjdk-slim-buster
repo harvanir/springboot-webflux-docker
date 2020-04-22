@@ -1,0 +1,5 @@
+FROM openjdk:8u252-jre-slim-buster
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENV JVM_OPT " "
+ENTRYPOINT ["sh", "-c", "java -server -Djava.security.egd=file:/dev/./urandom $JVM_OPT -jar /app.jar"]

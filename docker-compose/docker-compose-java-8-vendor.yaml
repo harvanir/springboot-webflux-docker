@@ -1,0 +1,72 @@
+version: "3.7"
+
+services:
+  webflux-8-alpine:
+    container_name: webflux-8-alpine
+    image: webflux-8-alpine
+    ports:
+      - 8181:8080
+      - 7001:7001
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:MaxRAMPercentage=90.0
+        -Xloggc:GC.log
+        -XX:+UseStringDeduplication
+        -XX:+PrintGCDetails
+        -XX:+PrintGCDateStamps
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7001 -Dcom.sun.management.jmxremote.rmi.port=7001
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+  webflux-8-slim-buster:
+    container_name: webflux-8-slim-buster
+    image: webflux-8-slim-buster
+    ports:
+      - 8282:8080
+      - 7002:7002
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:MaxRAMPercentage=90.0
+        -Xloggc:GC.log
+        -XX:+UseStringDeduplication
+        -XX:+PrintGCDetails
+        -XX:+PrintGCDateStamps
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7002 -Dcom.sun.management.jmxremote.rmi.port=7002
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

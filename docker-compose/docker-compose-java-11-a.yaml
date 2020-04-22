@@ -1,0 +1,99 @@
+version: "3.7"
+
+services:
+  eureka:
+    container_name: eureka
+    image: eureka
+    ports:
+      - 8761:8761
+    networks:
+      - service
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC -XX:MaxRAMPercentage=90.0 -XX:G1HeapRegionSize=2m -XX:MaxHeapFreeRatio=70 -Xloggc:GC.log
+        -XX:+UseStringDeduplication -XX:+PrintGCDetails -XX:+PrintGCDateStamps
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+  webflux-11-1:
+    container_name: webflux-11-1
+    image: webflux-11
+    ports:
+      - 8181:8080
+      - 7001:7001
+    depends_on:
+      - eureka
+    networks:
+      - service
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:MaxRAMPercentage=90.0
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7001 -Dcom.sun.management.jmxremote.rmi.port=7001
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+  webflux-11-2:
+    container_name: webflux-11-2
+    image: webflux-11
+    ports:
+      - 8282:8080
+      - 7002:7002
+    depends_on:
+      - eureka
+    networks:
+      - service
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:MaxRAMPercentage=90.0
+        -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=5
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7002 -Dcom.sun.management.jmxremote.rmi.port=7002
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+networks:
+  service:
