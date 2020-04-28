@@ -1,2 +1,2 @@
 #!/bin/sh
-docker-compose -f docker-compose-java-8-vendor.yaml --compatibility up
+docker-compose -f docker-compose/java-8-vendor.yaml --compatibility up
